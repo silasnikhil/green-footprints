@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import { useNavigate } from "react-router";
+
 import "./NavBar.css";
 
 const NavBar = () => {
+
+  const [click, setClick] = useState(false)
+    const handleClick = () => setClick(!click)
+
   const [toggleMenu, setToggleMenu] = useState(false);
   const navigate = useNavigate();
   return (
@@ -15,11 +20,15 @@ const NavBar = () => {
               Home
             </a>
           </p>
+          <button className="text-indigo-900" type="button" onClick={() => navigate("/usecase")}>
+          Usecase
+        </button>
+          
+          
           <p>
-            <a href="#usecase" className="text-indigo-900">
-              Use Case
-            </a>
-          </p>
+          
+            
+          </p>  
         </div>
       </div>
       <div className="navbar-sign text-indigo-900">
