@@ -106,6 +106,12 @@ a {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient__head {
+  background: var(--gradient-head);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .section__padding {
   padding: 0.5rem 6rem;
