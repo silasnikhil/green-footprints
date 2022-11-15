@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import "./demo.css";
+
 import { awsData, azureData, gcpData } from "../../dummy.js";
 
 import {
@@ -21,6 +22,7 @@ import {
   getAzureData,
   getGcpData,
 } from "../../service/carbonService";
+import PieChart from "../Chart/PieChart";
 
 function TabPanel({ ...props }) {
   const { children, value, index, ...other } = props;
@@ -41,7 +43,6 @@ function TabPanel({ ...props }) {
     </div>
   );
 }
-
 export default function BasicTabs({ data }) {
   const [value, setValue] = React.useState(0);
   const [aws, setAws] = React.useState("");
@@ -117,280 +118,330 @@ export default function BasicTabs({ data }) {
         return -1;
       }
     });
-    return (
-      <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-          }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            textColor="secondary"
-            indicatorColor="secondary"
-          >
-            <Tab label="AWS" />
-            <Tab label="Azure" />
-            <Tab label="GCP" />
-            <Tab label="Recommended" />
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <TableContainer
-            sx={{ maxHeight: "300px", bgcolor: "transparent" }}
-            component={Paper}
-          >
-            <Table stickyHeader aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Region
-                  </TableCell>
 
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    <TableSortLabel
+    // console.log(rData);
+
+    const co2eArr = [rData[0].co2e, rData[1].co2e, rData[2].co2e];
+
+    // Creating variable to store the sum
+    var sum = 0;
+
+    // Calculation the sum using forEach
+    co2eArr.forEach((x) => {
+      sum += x;
+    });
+
+    // console.log(co2eArr);
+
+    // console.log(sum);
+
+    const chartData = co2eArr.map((item) => ((item / sum) * 100).toFixed(2));
+
+    const co2eArr2 = [
+      {
+        value: chartData[0],
+        label: rData[0].emission_factor.activity_id.substring(13).toUpperCase(),
+      },
+      {
+        value: chartData[1],
+        label: rData[1].emission_factor.activity_id.substring(13).toUpperCase(),
+      },
+      {
+        value: chartData[2],
+        label: rData[2].emission_factor.activity_id.substring(13).toUpperCase(),
+      },
+    ];
+
+    // console.log(chartData);
+    // console.log(co2eArr2);
+
+    return (
+      <div>
+        <div className="float-right flex flex-1 -mt-96 mr-16">
+          <PieChart inputData={co2eArr2} />
+        </div>
+        <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+              textColor="secondary"
+              indicatorColor="secondary"
+            >
+              <Tab label="Recommended" />
+              <Tab label="AWS" />
+              <Tab label="Azure" />
+              <Tab label="GCP" />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <TableContainer
+              sx={{ maxHeight: "300px", bgcolor: "transparent" }}
+              component={Paper}
+            >
+              <Table stickyHeader aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
                       sx={{
                         bgcolor: "#3d3d3d",
                         color: "white",
                         textAlign: "center",
                       }}
-                      active={true}
-                      direction="asc"
                     >
-                      <span className="text-white font-bold">Co2e</span>
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Source
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {aws.results.map((result) => (
-                  <TableRow
-                    sx={{
-                      "&:first-of-type td, &:first-of-type th": {
-                        bgcolor: "green",
-                        color: "white",
-                        fontWeight: "bold",
-                      },
-                    }}
-                  >
-                    <TableCell>{result.emission_factor.activity_id}</TableCell>
-                    <TableCell>{result.co2e}</TableCell>
-                    <TableCell>{result.emission_factor.source}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <TableContainer
-            sx={{ maxHeight: "300px", bgcolor: "transparent" }}
-            component={Paper}
-          >
-            <Table stickyHeader aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Region
-                  </TableCell>
+                      Region
+                    </TableCell>
 
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    <TableSortLabel active={true} direction="asc">
-                      <span className="text-white font-bold">Co2e</span>
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Source
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {azure.results.map((result) => (
-                  <TableRow
-                    sx={{
-                      "&:first-of-type td, &:first-of-type th": {
-                        bgcolor: "green",
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
                         color: "white",
-                        fontWeight: "bold",
-                      },
-                    }}
-                  >
-                    <TableCell>{result.emission_factor.activity_id}</TableCell>
-                    <TableCell>{result.co2e}</TableCell>
-                    <TableCell>{result.emission_factor.source}</TableCell>
+                        textAlign: "center",
+                      }}
+                    >
+                      <TableSortLabel active={true} direction="asc">
+                        <span className="text-white font-bold">Co2e</span>
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Source
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TableContainer
-            sx={{ maxHeight: "300px", bgcolor: "transparent" }}
-            component={Paper}
-          >
-            <Table stickyHeader aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Region
-                  </TableCell>
+                </TableHead>
+                <TableBody>
+                  {rData.map((result) => (
+                    <TableRow
+                      sx={{
+                        "&:first-of-type td, &:first-of-type th": {
+                          bgcolor: "green",
+                          color: "white",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <TableCell>
+                        {result.emission_factor.activity_id}
+                      </TableCell>
+                      <TableCell>{result.co2e}</TableCell>
+                      <TableCell>{result.emission_factor.source}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <TableContainer
+              sx={{ maxHeight: "300px", bgcolor: "transparent" }}
+              component={Paper}
+            >
+              <Table stickyHeader aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Region
+                    </TableCell>
 
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    <TableSortLabel active={true} direction="asc">
-                      <span className="text-white font-bold">Co2e</span>
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Source
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {gcp.results.map((result) => (
-                  <TableRow
-                    sx={{
-                      "&:first-of-type td, &:first-of-type th": {
-                        bgcolor: "green",
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
                         color: "white",
-                        fontWeight: "bold",
-                      },
-                    }}
-                  >
-                    <TableCell>{result.emission_factor.activity_id}</TableCell>
-                    <TableCell>{result.co2e}</TableCell>
-                    <TableCell>{result.emission_factor.source}</TableCell>
+                        textAlign: "center",
+                      }}
+                    >
+                      <TableSortLabel
+                        sx={{
+                          bgcolor: "#3d3d3d",
+                          color: "white",
+                          textAlign: "center",
+                        }}
+                        active={true}
+                        direction="asc"
+                      >
+                        <span className="text-white font-bold">Co2e</span>
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Source
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <TableContainer
-            sx={{ maxHeight: "300px", bgcolor: "transparent" }}
-            component={Paper}
-          >
-            <Table stickyHeader aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Region
-                  </TableCell>
+                </TableHead>
+                <TableBody>
+                  {aws.results.map((result) => (
+                    <TableRow
+                      sx={{
+                        "&:first-of-type td, &:first-of-type th": {
+                          bgcolor: "green",
+                          color: "white",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <TableCell>
+                        {result.emission_factor.activity_id}
+                      </TableCell>
+                      <TableCell>{result.co2e}</TableCell>
+                      <TableCell>{result.emission_factor.source}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <TableContainer
+              sx={{ maxHeight: "300px", bgcolor: "transparent" }}
+              component={Paper}
+            >
+              <Table stickyHeader aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Region
+                    </TableCell>
 
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    <TableSortLabel active={true} direction="asc">
-                      <span className="text-white font-bold">Co2e</span>
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      bgcolor: "#3d3d3d",
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Source
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rData.map((result) => (
-                  <TableRow
-                    sx={{
-                      "&:first-of-type td, &:first-of-type th": {
-                        bgcolor: "green",
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
                         color: "white",
-                        fontWeight: "bold",
-                      },
-                    }}
-                  >
-                    <TableCell>{result.emission_factor.activity_id}</TableCell>
-                    <TableCell>{result.co2e}</TableCell>
-                    <TableCell>{result.emission_factor.source}</TableCell>
+                        textAlign: "center",
+                      }}
+                    >
+                      <TableSortLabel active={true} direction="asc">
+                        <span className="text-white font-bold">Co2e</span>
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Source
+                    </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </TabPanel>
-      </Box>
+                </TableHead>
+                <TableBody>
+                  {azure.results.map((result) => (
+                    <TableRow
+                      sx={{
+                        "&:first-of-type td, &:first-of-type th": {
+                          bgcolor: "green",
+                          color: "white",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <TableCell>
+                        {result.emission_factor.activity_id}
+                      </TableCell>
+                      <TableCell>{result.co2e}</TableCell>
+                      <TableCell>{result.emission_factor.source}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <TableContainer
+              sx={{ maxHeight: "300px", bgcolor: "transparent" }}
+              component={Paper}
+            >
+              <Table stickyHeader aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Region
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      <TableSortLabel active={true} direction="asc">
+                        <span className="text-white font-bold">Co2e</span>
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        bgcolor: "#3d3d3d",
+                        color: "white",
+                        textAlign: "center",
+                      }}
+                    >
+                      Source
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {gcp.results.map((result) => (
+                    <TableRow
+                      sx={{
+                        "&:first-of-type td, &:first-of-type th": {
+                          bgcolor: "green",
+                          color: "white",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
+                      <TableCell>
+                        {result.emission_factor.activity_id}
+                      </TableCell>
+                      <TableCell>{result.co2e}</TableCell>
+                      <TableCell>{result.emission_factor.source}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+        </Box>
+      </div>
     );
   }
 }

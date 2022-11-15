@@ -1,6 +1,6 @@
 import * as React from "react";
 import BasicTabs from "../components/Demo/demo";
-import SideBar from "../components/SideBar/Sidebar";
+
 
 export default function CloudComputingDashboard() {
   const [input, setInput] = React.useState({
@@ -34,14 +34,14 @@ export default function CloudComputingDashboard() {
 
   return (
     <div className="gradient__bg h-screen w-screen overflow-auto">
-      <SideBar />
-      <div className="text-indigo-900 flex flex-1 justify-center items-center -ml-32 -mt-16">
-        <h1 className="gradient__head text-3xl mt-8 font-extrabold">
+      {/* <SideBar /> */}
+      <div className="text-indigo-900 flex flex-1 ml-12 -mt-16">
+        <h1 className="gradient__head text-3xl mt-32 ml-4 font-extrabold">
           Cloud Computing (CPU)
         </h1>
       </div>
-      <div className="ml-96">
-        <div className="items-center justify-center w-full my-4">
+      <div>
+        <div className="items-center justify-center w-full my-4 ml-12">
           <label className="block text-gray-600 text-sm font-normal">
             CPU Count
           </label>
@@ -53,7 +53,7 @@ export default function CloudComputingDashboard() {
             className="h-6 w-96 border mt-2 px-2 py-2 text-black rounded-lg"
           ></input>
         </div>
-        <div className="items-center justify-center h-14 w-full my-4">
+        <div className="items-center justify-center h-14 w-full my-4 ml-12">
           <label className="block text-gray-600 text-sm font-normal">
             CPU LOAD (MIN VALUE = 0, MAX VALUE = 1)
           </label>
@@ -67,7 +67,7 @@ export default function CloudComputingDashboard() {
             className="h-6 w-96 border mt-2 px-2 py-2 text-black rounded-lg"
           ></input>
         </div>
-        <div className="items-center justify-center h-14 w-full my-4">
+        <div className="items-center justify-center h-14 w-full my-4 ml-12">
           <label className="block text-gray-600 text-sm font-normal">
             DURATION (in days)
           </label>
@@ -83,7 +83,7 @@ export default function CloudComputingDashboard() {
           <button
             // onClick={console.log(input)}
             onClick={loadData}
-            className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-2"
+            className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-2 ml-12"
           >
             Get Co2e
           </button>
