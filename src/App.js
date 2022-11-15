@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import "./App.css";
-import ColorTabs from "./pages/Dashboard";
+import CloudComputingDashboard from "./pages/Dashboard";
 import Landing from "./pages/Landing";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/dashboard" element={<ColorTabs />} />
+        <Route path="/dashboard" element={<CloudComputingDashboard />} />
       </Routes>
     </div>
   );

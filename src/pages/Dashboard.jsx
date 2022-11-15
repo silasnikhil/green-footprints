@@ -1,19 +1,23 @@
 import * as React from "react";
 import BasicTabs from "../components/Demo/demo";
+import SideBar from "../components/SideBar/Sidebar";
 
-export default function ColorTabs() {
+export default function CloudComputingDashboard() {
   const [input, setInput] = React.useState({
     count: "",
     load: "",
     duration: "",
   });
+  const [loading, setLoading] = React.useState(true);
 
   const handleChange = (e) => {
+    setLoading(true);
     const value = e.target.value;
-    setInput({ ...input, [e.target.name]: value });
+    setInput({ ...input, [e.target.name]: Number(value) });
   };
 
   const reset = (e) => {
+    setLoading(true);
     e.preventDefault();
     setInput({
       count: "",
@@ -22,9 +26,16 @@ export default function ColorTabs() {
     });
   };
 
+  const loadData = (e) => {
+    e.preventDefault();
+    // console.log(input);
+    setLoading(false);
+  };
+
   return (
     <div className="gradient__bg h-screen w-screen overflow-auto">
-      <div className="text-indigo-900 flex flex-1 justify-center items-center">
+      <SideBar />
+      <div className="text-indigo-900 flex flex-1 justify-center items-center -ml-32 -mt-16">
         <h1 className="gradient__head text-3xl mt-8 font-extrabold">
           Cloud Computing (CPU)
         </h1>
@@ -39,7 +50,7 @@ export default function ColorTabs() {
             name="count"
             value={input.count}
             onChange={(e) => handleChange(e)}
-            className="h-8 w-96 border mt-2 px-2 py-2 text-black"
+            className="h-6 w-96 border mt-2 px-2 py-2 text-black rounded-lg"
           ></input>
         </div>
         <div className="items-center justify-center h-14 w-full my-4">
@@ -53,7 +64,7 @@ export default function ColorTabs() {
             min="0"
             max="1"
             onChange={(e) => handleChange(e)}
-            className="h-8 w-96 border mt-2 px-2 py-2 text-black"
+            className="h-6 w-96 border mt-2 px-2 py-2 text-black rounded-lg"
           ></input>
         </div>
         <div className="items-center justify-center h-14 w-full my-4">
@@ -65,13 +76,13 @@ export default function ColorTabs() {
             name="duration"
             value={input.duration}
             onChange={(e) => handleChange(e)}
-            className="h-8 w-96 border mt-2 px-2 py-2 text-black"
+            className="h-6 w-96 border mt-2 px-2 py-2 text-black rounded-lg"
           ></input>
         </div>
-        <div className="items-center justify-center h-14 w-full my-4 space-x-4 pt-2">
+        <div className="items-center justify-center h-14 w-full my-4 space-x-4">
           <button
-            //   onClick={saveEmployee}
-            onClick={() => console.log(input)}
+            // onClick={console.log(input)}
+            onClick={loadData}
             className="rounded text-white font-semibold bg-green-400 hover:bg-green-700 py-2 px-2"
           >
             Get Co2e
@@ -84,7 +95,7 @@ export default function ColorTabs() {
           </button>
         </div>
       </div>
-      <BasicTabs />
+      {!loading && <BasicTabs data={input} />}
     </div>
   );
 }

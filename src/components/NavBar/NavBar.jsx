@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import { useNavigate } from "react-router";
 import "./NavBar.css";
+import logo from "../../assets/Brillio_logoRGB.png";
 
 const NavBar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -10,6 +11,9 @@ const NavBar = () => {
     <div className="flex justify-between items-center pt-8 pb-8 pl-24 pr-24">
       <div className="flex-1 flex justify-start items-center">
         <div className="navbar-links_container">
+          <p>
+            <img className="-mt-1" src={logo} width="80" />
+          </p>
           <p>
             <a href="#home" className="text-indigo-900">
               Home
